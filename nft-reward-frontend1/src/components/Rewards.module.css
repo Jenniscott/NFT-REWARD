@@ -1,0 +1,84 @@
+.rewards {
+  padding: 1rem;
+}
+
+.balance {
+  text-align: center;
+  padding: 2rem;
+  background-color: var(--gray-light);
+  border-radius: 0.5rem;
+  margin-bottom: 2rem;
+}
+
+.balance h3 {
+  color: var(--text);
+  margin: 0 0 1rem;
+}
+
+.balance p {
+  font-size: 2.5rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin: 0;
+}
+
+.history {
+  background: white;
+  border-radius: 0.5rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.history h3 {
+  margin: 0 0 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid var(--gray-light);
+}
+
+.eventList {
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.event {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem;
+  border-bottom: 1px solid var(--gray-light);
+  transition: background-color 0.2s;
+}
+
+.event:hover {
+  background-color: var(--gray-light);
+}
+
+.amount {
+  font-weight: 500;
+  color: var(--primary-color);
+}
+
+.date {
+  color: var(--gray);
+  font-size: 0.875rem;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: var(--gray);
+}
+
+.error {
+  text-align: center;
+  padding: 1.5rem;
+  color: var(--error);
+  background-color: rgba(239, 68, 68, 0.1);
+  border-radius: 0.5rem;
+  margin: 1rem 0;
+}
+
+.empty {
+  text-align: center;
+  padding: 2rem;
+  color: var(--gray);
+} 
