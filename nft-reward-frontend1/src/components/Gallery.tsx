@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { getNFTContract, getTokenContract } from '../utils/ethers';
+import { getNFTContract } from '../utils/ethers';
 import type { NFTMetadata } from '../utils/ethers';
 import { ethers } from 'ethers';
 import styles from './Gallery.module.css';
