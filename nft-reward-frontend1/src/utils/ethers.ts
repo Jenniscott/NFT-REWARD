@@ -22,18 +22,18 @@ export const getNFTContract = async (withSigner = false) => {
   const provider = getProvider();
   if (withSigner) {
     const signer = await getSigner();
-    return new ethers.Contract(NFT_CONTRACT_ADDRESS, NFTContract.abi, signer);
+    return new ethers.Contract(NFT_CONTRACT_ADDRESS, NFTContract as unknown as ethers.InterfaceAbi, signer);
   }
-  return new ethers.Contract(NFT_CONTRACT_ADDRESS, NFTContract.abi, provider);
+  return new ethers.Contract(NFT_CONTRACT_ADDRESS, NFTContract as unknown as ethers.InterfaceAbi, provider);
 };
 
 export const getTokenContract = async (withSigner = false) => {
   const provider = getProvider();
   if (withSigner) {
     const signer = await getSigner();
-    return new ethers.Contract(TOKEN_CONTRACT_ADDRESS, TokenContract.abi, signer);
+    return new ethers.Contract(TOKEN_CONTRACT_ADDRESS, TokenContract as unknown as ethers.InterfaceAbi, signer);
   }
-  return new ethers.Contract(TOKEN_CONTRACT_ADDRESS, TokenContract.abi, provider);
+  return new ethers.Contract(TOKEN_CONTRACT_ADDRESS, TokenContract as unknown as ethers.InterfaceAbi, provider);
 };
 
 // Wallet connection

@@ -72,7 +72,7 @@ export const Gallery = () => {
     // Listen for new mint events
     const setupEventListener = async () => {
       const contract = await getNFTContract();
-      contract.on('NFTMintedWithReward', async (tokenId, creator, reward) => {
+      contract.on('NFTMintedWithReward', async (tokenId) => {
         const newNft = await fetchNFTData(Number(tokenId));
         if (newNft) {
           setNfts(prev => [...prev, newNft]);
