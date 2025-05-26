@@ -18,33 +18,49 @@ export const MintForm = () => {
 
   const uploadToPinata = async (file: File) => {
     console.log('Starting file upload to Pinata...');
+    console.log('API Key present:', !!PINATA_API_KEY);
+    console.log('Secret Key present:', !!PINATA_SECRET_API_KEY);
+    
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await axios.post('https://api.pinata.cloud/pinning/pinFileToIPFS', formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-        pinata_api_key: PINATA_API_KEY,
-        pinata_secret_api_key: PINATA_SECRET_API_KEY,
-      },
-    });
+    try {
+      const response = await axios.post('https://api.pinata.cloud/pinning/pinFileToIPFS', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          'pinata_api_key': PINATA_API_KEY,
+          'pinata_secret_api_key': PINATA_SECRET_API_KEY
+        },
+        maxBodyLength: Infinity
+      });
 
-    console.log('File uploaded to Pinata:', response.data);
-    return `ipfs://${response.data.IpfsHash}`;
+      console.log('File uploaded to Pinata:', response.data);
+      return `ipfs://${response.data.IpfsHash}`;
+    } catch (err: any) {
+      console.error('Pinata upload error:', err.response?.data || err.message);
+      throw new Error(`Failed to upload to Pinata: ${err.response?.data?.message || err.message}`);
+    }
   };
 
   const uploadMetadataToPinata = async (metadata: NFTMetadata) => {
     console.log('Starting metadata upload to Pinata:', metadata);
-    const response = await axios.post('https://api.pinata.cloud/pinning/pinJSONToIPFS', metadata, {
-      headers: {
-        'Content-Type': 'application/json',
-        pinata_api_key: PINATA_API_KEY,
-        pinata_secret_api_key: PINATA_SECRET_API_KEY,
-      },
-    });
+    
+    try {
+      const response = await axios.post('https://api.pinata.cloud/pinning/pinJSONToIPFS', metadata, {
+        headers: {
+          'Content-Type': 'application/json',
+          'pinata_api_key': PINATA_API_KEY,
+          'pinata_secret_api_key': PINATA_SECRET_API_KEY
+        },
+        maxBodyLength: Infinity
+      });
 
-    console.log('Metadata uploaded to Pinata:', response.data);
-    return `ipfs://${response.data.IpfsHash}`;
+      console.log('Metadata uploaded to Pinata:', response.data);
+      return `ipfs://${response.data.IpfsHash}`;
+    } catch (err: any) {
+      console.error('Pinata metadata upload error:', err.response?.data || err.message);
+      throw new Error(`Failed to upload metadata to Pinata: ${err.response?.data?.message || err.message}`);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {

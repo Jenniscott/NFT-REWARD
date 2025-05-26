@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { WalletConnect } from './components/WalletConnect'
 import { MintForm } from './components/MintForm'
 import { Gallery } from './components/Gallery'
-import { Rewards } from './components/Rewards'
+import { RewardSystem } from './components/RewardSystem'
 import styles from './App.module.css'
 
 const App = () => {
@@ -27,7 +27,7 @@ const App = () => {
             </section>
 
             <section className={styles.section}>
-              <Rewards address={address} />
+              <RewardSystem address={address} />
             </section>
           </>
         ) : (
