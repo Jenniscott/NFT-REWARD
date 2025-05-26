@@ -10,10 +10,33 @@ interface NFT extends NFTMetadata {
   reward?: string;
 }
 
+const IPFS_GATEWAYS = [
+  'https://ipfs.io/ipfs/',
+  'https://gateway.pinata.cloud/ipfs/',
+  'https://cloudflare-ipfs.com/ipfs/',
+  'https://gateway.ipfs.io/ipfs/'
+];
+
 export const Gallery = () => {
   const [nfts, setNfts] = useState<NFT[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+
+  const fetchWithFallback = async (uri: string): Promise<Response> => {
+    const cid = uri.replace('ipfs://', '');
+    
+    for (const gateway of IPFS_GATEWAYS) {
+      try {
+        const response = await fetch(gateway + cid);
+        if (response.ok) {
+          return response;
+        }
+      } catch (err) {
+        console.warn(`Failed to fetch from ${gateway}`, err);
+      }
+    }
+    throw new Error('Failed to fetch from all IPFS gateways');
+  };
 
   const fetchNFTs = async () => {
     try {
@@ -39,10 +62,38 @@ export const Gallery = () => {
         contract.getCreator(tokenId)
       ]);
 
-      // Convert IPFS URI to HTTPS
-      const httpsUri = uri.replace('ipfs://', 'https://ipfs.io/ipfs/');
-      const response = await fetch(httpsUri);
-      const metadata = await response.json();
+      let metadata;
+      let imageUrl;
+      const gateways = [
+        'https://ipfs.io/ipfs/',
+        'https://gateway.pinata.cloud/ipfs/',
+        'https://cloudflare-ipfs.com/ipfs/',
+        'https://gateway.ipfs.io/ipfs/'
+      ];
+
+      // Try to fetch metadata from different gateways
+      for (const gateway of gateways) {
+        try {
+          const metadataUri = uri.replace('ipfs://', gateway);
+          const response = await fetch(metadataUri);
+          if (response.ok) {
+            metadata = await response.json();
+            // Try to fetch image from the same gateway
+            imageUrl = metadata.image.replace('ipfs://', gateway);
+            const imageResponse = await fetch(imageUrl);
+            if (imageResponse.ok) {
+              break;
+            }
+          }
+        } catch (err) {
+          console.warn(`Failed to fetch from ${gateway}`, err);
+          continue;
+        }
+      }
+
+      if (!metadata || !imageUrl) {
+        throw new Error('Failed to fetch metadata or image from all gateways');
+      }
 
       // Get reward amount for this NFT from events
       const filter = contract.filters.NFTMintedWithReward(tokenId);
@@ -57,7 +108,7 @@ export const Gallery = () => {
         creator,
         name: metadata.name,
         description: metadata.description,
-        image: metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/'),
+        image: imageUrl,
         reward
       };
     } catch (err) {

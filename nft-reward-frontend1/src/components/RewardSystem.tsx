@@ -21,15 +21,23 @@ export const RewardSystem = ({ address }: { address: string }) => {
       if (!address) return;
       
       try {
+        console.log('Fetching token balance for address:', address);
         // Get token balance
         const tokenContract = await getTokenContract();
+        console.log('Token contract initialized');
         const balanceWei = await tokenContract.balanceOf(address);
+        console.log('Raw balance:', balanceWei.toString());
         setBalance(ethers.formatEther(balanceWei));
+        console.log('Formatted balance:', ethers.formatEther(balanceWei));
 
         // Get mint events
+        console.log('Initializing NFT contract');
         const nftContract = await getNFTContract();
+        console.log('NFT contract initialized');
         const filter = nftContract.filters.NFTMintedWithReward();
+        console.log('Filter created');
         const events = await nftContract.queryFilter(filter);
+        console.log('Raw events:', events);
         
         const formattedEvents = events
           .filter((event): event is ethers.EventLog => 'args' in event)
@@ -39,12 +47,17 @@ export const RewardSystem = ({ address }: { address: string }) => {
             reward: ethers.formatEther(event.args[2]),
             timestamp: event.blockNumber
           }));
+        console.log('Formatted events:', formattedEvents);
 
         setMintEvents(formattedEvents);
         setLoading(false);
       } catch (err) {
-        console.error('Error fetching reward data:', err);
-        setError('Failed to load reward data');
+        console.error('Detailed error in fetchData:', err);
+        if (err instanceof Error) {
+          setError(`Failed to load reward data: ${err.message}`);
+        } else {
+          setError('Failed to load reward data: Unknown error');
+        }
         setLoading(false);
       }
     };

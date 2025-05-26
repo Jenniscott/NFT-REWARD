@@ -1,25 +1,57 @@
+/* Reset default margins and padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+body {
+  background-color: var(--background);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
 :root {
   --primary-color: #3b82f6;
   --primary-hover: #2563eb;
-  --background: #ffffff;
+  --background: #f8f9fa;
   --text: #1f2937;
   --gray-light: #f3f4f6;
   --gray: #9ca3af;
   --error: #ef4444;
   --success: #10b981;
+  --header-height: 120px;
 }
 
 .app {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
   min-height: 100vh;
   background-color: var(--background);
-  color: var(--text);
+  width: 100%;
 }
 
 .header {
-  padding: 2rem;
   background-color: var(--primary-color);
   color: white;
+  padding: 1.5rem;
   text-align: center;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 10;
 }
 
 .header h1 {
@@ -28,17 +60,30 @@
 }
 
 .main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  padding: 2rem 1rem;
+  margin: 0 auto;
+  gap: 2rem;
+}
+
+.main > * {
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding: 2rem;
 }
 
 .section {
   background: white;
   border-radius: 0.5rem;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  padding: 1.5rem;
-  margin-bottom: 2rem;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .connect {
@@ -46,16 +91,19 @@
   padding: 3rem;
   font-size: 1.25rem;
   color: var(--gray);
+  width: 100%;
 }
 
 /* Form styles */
 .form {
   max-width: 600px;
   margin: 0 auto;
+  width: 100%;
+  padding: 1rem;
 }
 
 .field {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .field label {
@@ -67,7 +115,7 @@
 .field input,
 .field textarea {
   width: 100%;
-  padding: 0.5rem;
+  padding: 0.75rem;
   border: 1px solid var(--gray);
   border-radius: 0.25rem;
 }
@@ -94,15 +142,14 @@
 
 /* Gallery styles */
 .grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1.5rem;
+  width: 100%;
 }
 
 .card {
-  border: 1px solid var(--gray-light);
+  background: white;
   border-radius: 0.5rem;
   overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .image {
@@ -113,16 +160,19 @@
 
 .details {
   padding: 1rem;
+  text-align: center;
 }
 
 .details h3 {
   margin: 0 0 0.5rem;
+  color: var(--text);
 }
 
 .creator,
 .tokenId {
   color: var(--gray);
   font-size: 0.875rem;
+  margin: 0.25rem 0;
 }
 
 /* Rewards styles */
@@ -162,21 +212,67 @@
 .error {
   color: var(--error);
   margin: 1rem 0;
+  text-align: center;
+  width: 100%;
 }
 
 .success {
   color: var(--success);
   margin: 1rem 0;
+  text-align: center;
+  width: 100%;
 }
 
 .loading {
   text-align: center;
   color: var(--gray);
   padding: 2rem;
+  width: 100%;
 }
 
 .empty {
   text-align: center;
   color: var(--gray);
   padding: 2rem;
+  width: 100%;
+}
+
+/* Grid layout for PC view */
+@media (min-width: 1024px) {
+  .header {
+    padding: 2rem;
+  }
+
+  .main {
+    padding: 4rem 2rem;
+    gap: 3rem;
+  }
+
+  .section {
+    padding: 3rem;
+  }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    place-items: center;
+  }
+
+  .card {
+    width: 100%;
+    transition: transform 0.2s ease-in-out;
+  }
+
+  .card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+
+  .image {
+    height: 250px;
+  }
 } 
